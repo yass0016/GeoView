@@ -235,16 +235,18 @@
                 var addAppbarPanelBtn = document.getElementsByClassName('add-appbar-panel-btn')[0];
 
                 // add appbar panel btn click event handler
-                addAppbarPanelBtn.addEventListener('click', function (e) {
+                addAppbarPanelBtn.addEventListener('click', async function (e) {
                     const button = {
                         tooltip: 'Test',
                         icon: '<div>Icon</div>',
                     };
 
+                    const PanelContent = await cgpv.api.loadRemoteComponent('/plugins/panel-content/panel.js');
+
                     const panel = {
                         title: 'Test',
                         icon: `<div>Icon</div>`,
-                        content: `<div>Test content</div>`,
+                        content: PanelContent,
                         width: 200,
                     };
 
