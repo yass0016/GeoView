@@ -5,7 +5,7 @@ const PanelContent = () => {
 
     return (
         <div>
-            <p>Hello {count}</p>
+            <p>Count is: {count}</p>
             <button type="button" onClick={() => setCount(count + 1)}>
                 Add count
             </button>
