@@ -1,38 +1,58 @@
 import React, { useEffect, useState } from 'react';
 
-const PanelContent = () => {
-    const [vectors, setVectors] = useState([]);
+const PanelContent = (props) => {
+    const [vectors, setVectors] = useState({});
 
     const { cgpv } = window;
+    const { mapId } = props;
 
-    const addVector = (vector) => {
-        setVectors([
-            ...vectors,
-            {
-                id: vector.id,
-                layer: vector.layer,
-                type: vector.type,
-                mapId: vector.handlerName,
-            },
-        ]);
-    };
-
-    const deleteVector = (id, mapId) => {
+    const deleteVector = (id) => {
         cgpv.api.map(mapId).deleteGeometry(id);
 
         setVectors(
-            vectors.filter((vector) => {
-                return vector.id !== id;
-            })
+            Object.assign(
+                {},
+                Object.values(vectors).filter((vector) => vector.id !== id)
+            )
         );
     };
 
     useEffect(() => {
-        cgpv.api.on('vector/added', (payload) => {
-            addVector(payload);
+        // load existing vectors
+        const { layers } = cgpv.api.map(mapId);
+
+        const prevVectors = {};
+
+        layers.forEach((vector) => {
+            const { id } = vector;
+
+            prevVectors[id] = {
+                id: vector.id,
+                layer: vector.layer,
+                type: vector.type,
+                mapId: vector.handlerName,
+            };
         });
 
-        // turn off event listeners on component unmounts
+        setVectors(prevVectors);
+    }, []);
+
+    useEffect(() => {
+        // listen to newely added vectors
+        cgpv.api.on('vector/added', (payload) => {
+            const { id } = payload;
+
+            setVectors({
+                ...vectors,
+                [id]: {
+                    id: payload.id,
+                    layer: payload.layer,
+                    type: payload.type,
+                    mapId: payload.handlerName,
+                },
+            });
+        });
+
         return () => {
             cgpv.api.off('vector/added');
         };
@@ -40,7 +60,8 @@ const PanelContent = () => {
 
     return (
         <div>
-            {vectors.map((vector) => {
+            {Object.keys(vectors).map((key) => {
+                const vector = vectors[key];
                 return (
                     <div key={vector.id}>
                         <p>Vector ID: {vector.id}</p>
