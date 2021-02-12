@@ -1,11 +1,24 @@
 import React, { useEffect, useState } from 'react';
 
+/**
+ * A panel content plugin that will list existing vectors or listen to newely added ones
+ *
+ * @param {*} props optional properties
+ */
 const PanelContent = (props) => {
     const [vectors, setVectors] = useState({});
 
+    // get a reference to the viewer api
     const { cgpv } = window;
+
+    // get the mapId passed in when loading the component
     const { mapId } = props;
 
+    /**
+     * Delete a vector from the map and from the panel content vector list
+     *
+     * @param {string} id the id of vector to delete
+     */
     const deleteVector = (id) => {
         cgpv.api.map(mapId).deleteGeometry(id);
 
@@ -17,12 +30,16 @@ const PanelContent = (props) => {
         );
     };
 
+    /**
+     * get a list of all added layers and add them to the panel content
+     */
     useEffect(() => {
         // load existing vectors
         const { layers } = cgpv.api.map(mapId);
 
         const prevVectors = {};
 
+        // loop each vector and add it to the panel vector list
         layers.forEach((vector) => {
             const { id } = vector;
 
@@ -37,6 +54,9 @@ const PanelContent = (props) => {
         setVectors(prevVectors);
     }, []);
 
+    /**
+     * listen to newely added vectors and add them to the panel vector list
+     */
     useEffect(() => {
         // listen to newely added vectors
         cgpv.api.on('vector/added', (payload) => {
