@@ -318,14 +318,11 @@
         };
 
         // hook is called once the plugin has been unmounted, remove any added components
-        unmounted = () => {
+        removed = () => {
             const { mapId } = this.props;
 
             this.api.map(mapId).removeAppbarPanel(this.panel.id);
         };
-
-        // hook is called when a plugin has been removed
-        removed = () => {};
     }
 
     // export this plugin
