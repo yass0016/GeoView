@@ -16,9 +16,19 @@ object-assign
 */
 
 /*!
+* focus-trap 6.3.0
+* @license MIT, https://github.com/focus-trap/focus-trap/blob/master/LICENSE
+*/
+
+/*!
 * screenfull
 * v5.0.2 - 2020-02-13
 * (c) Sindre Sorhus; MIT License
+*/
+
+/*!
+* tabbable 5.1.6
+* @license MIT, https://github.com/focus-trap/tabbable/blob/master/LICENSE
 */
 
 /**
