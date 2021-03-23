@@ -1,4 +1,4 @@
-import { Map } from 'leaflet';
+import L, { Map } from 'leaflet';
 
 /* eslint-disable no-plusplus */
 import { Event, EVENT_NAMES } from './event';
@@ -55,6 +55,13 @@ export class API {
         this.event = new Event();
         this.projection = new Projection();
         this.plugin = new Plugin();
+
+        L.Map.addInitHook(function () {
+            this.on('layeradd', (e) => {
+                e.layer.on('data:loading', function () {});
+            });
+            this.on('layerremove', (e) => {});
+        });
     }
 
     /**
@@ -123,6 +130,44 @@ export class API {
             ...this.selectedMapInstance.basemap,
             ...this.selectedMapInstance.layer,
         };
+    };
+
+    SpinMapInitHook = function () {
+        console.log('called');
+        this.on(
+            'layeradd',
+            function (e) {
+                // If added layer is currently loading, spin !
+                if (e.layer.loading) console.log('loading');
+                if (typeof e.layer.on !== 'function') return;
+                e.layer.on(
+                    'data:loading',
+                    function () {
+                        console.log('on loading');
+                    },
+                    this
+                );
+                e.layer.on(
+                    'data:loaded',
+                    function () {
+                        console.log('on loaded');
+                    },
+                    this
+                );
+            },
+            this
+        );
+        this.on(
+            'layerremove',
+            function (e) {
+                // Clean-up
+                if (e.layer.loading) console.log('cleaning');
+                if (typeof e.layer.on !== 'function') return;
+                e.layer.off('data:loaded');
+                e.layer.off('data:loading');
+            },
+            this
+        );
     };
 }
 
