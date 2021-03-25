@@ -46,7 +46,7 @@
                 { 'url': 'https://webservices.maps.canada.ca/arcgis/services/StatCan/census_subdivisions_2016_en/MapServer/WMSServer', 'type': 'ogcWMS', 'entries': '0' } ,
                 { 'url': 'https://geoappext.nrcan.gc.ca/arcgis/rest/services/NACEI/energy_infrastructure_of_north_america_en/MapServer', 'type': 'esriDynamic', 'entries': '4, 5, 10' } ,
                 { 'url': 'https://geoappext.nrcan.gc.ca/arcgis/rest/services/NACEI/energy_infrastructure_of_north_america_en/MapServer/1', 'type': 'esriFeature' }
-            ]}"></div><p>This map is in LCC projection with an English interface.</p></div><script>// initialize cgpv and api events, a callback is optional, used if calling api's after the rendering is ready
+            ]}"></div><p>This map is in LCC projection with an English interface.</p><p><strong>Code Snippet:</strong></p><div id="codeSnippet" class="panel"></div></div><script src="codedoc.js"></script><script>// initialize cgpv and api events, a callback is optional, used if calling api's after the rendering is ready
             cgpv.init(function () {
                 console.log('api is ready');
 
@@ -85,4 +85,6 @@
                 unloadBasemapSwitcherBtn.addEventListener('click', function (e) {
                     cgpv.api.removePlugin('basemapSwitcher');
                 });
+
+                createCodeSnippet();
             });</script></body></html>
