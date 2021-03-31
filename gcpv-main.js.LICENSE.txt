@@ -1,4 +1,9 @@
 /*
+ BSD-2-Clause
+ @preserve
+*/
+
+/*
 object-assign
 (c) Sindre Sorhus
 @license MIT
